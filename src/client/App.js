@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Col, Container, Row, Button, Card, CardBody, Form, FormGroup, Input, Label } from "reactstrap";
-import VoteForm from './component/VoteForm';
-import AwardCard from './component/AwardCard';
+import VoteForm from './components/VoteForm';
+import AwardCard from './components/AwardCard';
+import KudosForm from "./components/KudosForm";
 
 class App extends Component {
 
@@ -53,17 +54,23 @@ class App extends Component {
         {
           id: 1,
           title: "Best Boss Award!",
-          comment: "Thanks for always looking out for us."
+          comment: "Thanks for always looking out for us.",
+          sender: "Fabian",
+          receiver: "Leon"
         },
         {
           id: 2,
           title: "Longest Commute Award!",
-          comment: "I can't believe Leslie makes it to work as often as she does."
+          comment: "I can't believe Laura makes it to work as often as she does.",
+          sender: "Archit",
+          receiver: "Laura"
         },
         {
           id: 3,
           title: "Most likely to nap at work!",
-          comment: "Maybe you need more coffee."
+          comment: "Maybe you need more coffee.",
+          sender: "Gobi",
+          receiver: "Owen"
         }
 
       ]
@@ -90,13 +97,17 @@ class App extends Component {
             <VoteForm />
           </Col>
           <Col md="12" lg="9">
-            {this.state.awards.map(award => <AwardCard title={award.title} comment={award.comment} />)}
+            {this.state.awards.map(award => <AwardCard title={award.title} comment={award.comment} receiver={award.receiver} />)}
           </Col>
         </Row>
         <br />
         <Row>
           <Col md="12">
-            <Form>
+            {/* {this.state.users.map((element, i) => <p>{element.name}</p>)} */}
+            {/* pass users attribut to KudosForm that consist of names from the array of users. Had to use <div> or it didn't work */}
+            <KudosForm users={this.state.users.map(element => <div> {element.name}</div>)} />
+
+            {/* <Form>
               <FormGroup>
                 <Label>Give Kudos to</Label>
                 <Input type="select">
@@ -109,7 +120,7 @@ class App extends Component {
               <FormGroup>
                 <Input type="textarea" placeholder="Kudos text" />
               </FormGroup>
-            </Form>
+            </Form> */}
           </Col>
         </Row>
         {/*New Code Goes Below Here */}
