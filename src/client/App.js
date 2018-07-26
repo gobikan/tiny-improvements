@@ -11,23 +11,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      users: [
-        // {
-        //   userId: 45089,
-        //   name: "Owen",
-        //   position: "Captian of the Breakroom"
-        // },
-        // {
-        //   userId: 223,
-        //   name: "Brooke",
-        //   position: "Winner of All Dance-Offs"
-        // },
-        // {
-        //   userId: 6582,
-        //   name: "Gobi",
-        //   position: "King of Mid-Day Naps1"
-        // }
-      ],
+      users: [],
 
       friends: [],
 
@@ -82,8 +66,7 @@ class App extends Component {
     }
   }
 
-  //comment
-  /*comment */
+
   componentDidMount = () => {
     axios.get("/api/users").then(
       response => {
@@ -92,28 +75,16 @@ class App extends Component {
         )
       }
     );
+
     axios.get("/api/awards").then(response =>
       this.setState({
         awards: response.data
       })
     );
-    axios.get("/api/friends").then(
-      response => {
-        this.setState(
-          { friends: response.data }
-        )
-      }
-    );
-    axios.post("/api/kudos", {
-      id: 4,
-      title: "Loudest Easter Award",
-      comment: "Who chews carrots like that at work??"
-    }).then(response => {
-      this.setState({
-        awards: response.data
-      })
-    })
+
+
   }
+
   //Function to post
   postKudoFunction = () => {
     axios.post("/api/kudos", {
@@ -126,6 +97,7 @@ class App extends Component {
       })
     })
   }
+
   render() {
     return (
       <Container>
@@ -142,8 +114,6 @@ class App extends Component {
                 <Button color="success">Give Kudos</Button>
               </CardBody>
             </Card>
-            <br />
-            <VoteForm />
           </Col>
           <Col md="12" lg="9">
             {this.state.awards.map((award, index) => <AwardCard key={index} title={award.title} comment={award.comment} receiver={award.receiver} />)}
@@ -152,25 +122,10 @@ class App extends Component {
         <br />
         <Row>
           <Col md="12">
-            {/* {this.state.users.map((element, i) => <p>{element.name}</p>)} */}
-            {/* pass users attribut to KudosForm that consist of names from the array of users. Had to use <div> or it didn't work */}
 
-            <KudosForm postKudo={this.postKudoFunction} formusers={this.state.users.map(user => { user.name })} />
+            {/* pass users from state to formusers as a prop */}
+            <KudosForm awards={this.state.awards} postKudo={this.postKudoFunction} formusers={this.state.users} />
 
-            {/* <Form>
-              <FormGroup>
-                <Label>Give Kudos to</Label>
-                <Input type="select">
-                  {this.state.users.map(element => <option>{element.name}</option>)}
-                </Input>
-              </FormGroup>
-              <FormGroup>
-                <Input type="text" placeholder="Kudos Title" />
-              </FormGroup>
-              <FormGroup>
-                <Input type="textarea" placeholder="Kudos text" />
-              </FormGroup>
-            </Form> */}
           </Col>
         </Row>
         {/*New Code Goes Below Here */}

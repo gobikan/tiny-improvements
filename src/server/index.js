@@ -106,10 +106,7 @@ app.post("/api/kudos", (req, res) => {
     res.json(awards)
 });
 
-app.post("/api/postKudos", (req, res) => {
-    awards.push(req.body);
-    res.json(awards)
-});
+
 
 
 app.listen(PORT, function () {

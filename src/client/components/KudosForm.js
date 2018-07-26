@@ -7,8 +7,8 @@ const KudosForm = props => (
         <FormGroup>
             <Label>Give Kudos to</Label>
             <Input type="select">
-                {/* Go through users array and list out each user as an option */}
-                {props.formusers.map((user, index) => <option key={index}>{user} </option>)}
+                {/* Go through formusers array and map out the name of each user*/}
+                {props.formusers.map((user, index) => <option key={index}>{user.name} </option>)}
             </Input>
         </FormGroup>
         <FormGroup>
