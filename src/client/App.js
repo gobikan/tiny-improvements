@@ -3,6 +3,8 @@ import { Col, Container, Row, Button, Card, CardBody, Form, FormGroup, Input, La
 import VoteForm from './components/VoteForm';
 import AwardCard from './components/AwardCard';
 import KudosForm from "./components/KudosForm";
+import PetCard from "./components/PetCard";
+import axios from "axios";
 
 class App extends Component {
 
@@ -10,22 +12,24 @@ class App extends Component {
     super();
     this.state = {
       users: [
-        {
-          userId: 45089,
-          name: "Owen",
-          position: "Captian of the Breakroom"
-        },
-        {
-          userId: 223,
-          name: "Brooke",
-          position: "Winner of All Dance-Offs"
-        },
-        {
-          userId: 6582,
-          name: "Gobi",
-          position: "King of Mid-Day Naps1"
-        }
+        // {
+        //   userId: 45089,
+        //   name: "Owen",
+        //   position: "Captian of the Breakroom"
+        // },
+        // {
+        //   userId: 223,
+        //   name: "Brooke",
+        //   position: "Winner of All Dance-Offs"
+        // },
+        // {
+        //   userId: 6582,
+        //   name: "Gobi",
+        //   position: "King of Mid-Day Naps1"
+        // }
       ],
+
+      friends: [],
 
       restaurants: [
         {
@@ -50,33 +54,78 @@ class App extends Component {
         }
       ],
 
-      awards: [
-        {
-          id: 1,
-          title: "Best Boss Award!",
-          comment: "Thanks for always looking out for us.",
-          sender: "Fabian",
-          receiver: "Leon"
-        },
-        {
-          id: 2,
-          title: "Longest Commute Award!",
-          comment: "I can't believe Laura makes it to work as often as she does.",
-          sender: "Archit",
-          receiver: "Laura"
-        },
-        {
-          id: 3,
-          title: "Most likely to nap at work!",
-          comment: "Maybe you need more coffee.",
-          sender: "Gobi",
-          receiver: "Owen"
-        }
+      awards: [],
 
+      pets: [
+        {
+          name: 'Memphis',
+          age: 12,
+          type: 'Dog'
+        },
+        {
+          name: 'Baby',
+          age: 11,
+          type: 'Panther'
+        },
+        {
+          name: 'Peach',
+          age: 3,
+          type: 'Cat'
+        },
+        {
+          name: 'Opal',
+          age: 1,
+          type: 'Kitten'
+        }
       ]
+
     }
   }
 
+  //comment
+  /*comment */
+  componentDidMount = () => {
+    axios.get("/api/users").then(
+      response => {
+        this.setState(
+          { users: response.data }
+        )
+      }
+    );
+    axios.get("/api/awards").then(response =>
+      this.setState({
+        awards: response.data
+      })
+    );
+    axios.get("/api/friends").then(
+      response => {
+        this.setState(
+          { friends: response.data }
+        )
+      }
+    );
+    axios.post("/api/kudos", {
+      id: 4,
+      title: "Loudest Easter Award",
+      comment: "Who chews carrots like that at work??"
+    }).then(response => {
+      this.setState({
+        awards: response.data
+      })
+    })
+  }
+  //Function to post
+  postKudoFunction = () => {
+    axios.post("/api/kudos", {
+      id: 5,
+      title: "Fastest Typer Award",
+      comment: "Have you seen how fast George types??"
+    }).then(response => {
+      this.setState({
+        awards: response.data
+      })
+    })
+  }
   render() {
     return (
       <Container>
@@ -97,7 +146,7 @@ class App extends Component {
             <VoteForm />
           </Col>
           <Col md="12" lg="9">
-            {this.state.awards.map(award => <AwardCard title={award.title} comment={award.comment} receiver={award.receiver} />)}
+            {this.state.awards.map((award, index) => <AwardCard key={index} title={award.title} comment={award.comment} receiver={award.receiver} />)}
           </Col>
         </Row>
         <br />
@@ -105,7 +154,8 @@ class App extends Component {
           <Col md="12">
             {/* {this.state.users.map((element, i) => <p>{element.name}</p>)} */}
             {/* pass users attribut to KudosForm that consist of names from the array of users. Had to use <div> or it didn't work */}
-            <KudosForm users={this.state.users.map(element => <div> {element.name}</div>)} />
+
+            <KudosForm postKudo={this.postKudoFunction} formusers={this.state.users.map(user => { user.name })} />
 
             {/* <Form>
               <FormGroup>
@@ -125,6 +175,22 @@ class App extends Component {
         </Row>
         {/*New Code Goes Below Here */}
 
+
+        {/* {this.state.pets.map((pet, index) => <PetCard key={index} name={pet.name} age={pet.age} />)}
+
+        <hr />
+        <h1> 🙋🏽 Friend Space </h1>
+        <br />
+        <h4> My Friend List: </h4>
+        <br />
+        {this.state.friends.map((e, index) => (
+          <Card>
+            <CardBody >
+              <h2 key={index}> {e.name}</h2>
+              <p> {e.location} </p>
+            </CardBody>
+          </Card>
+        ))} */}
       </Container>
     )
   }

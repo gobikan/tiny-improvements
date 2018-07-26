@@ -8,9 +8,7 @@ const KudosForm = props => (
             <Label>Give Kudos to</Label>
             <Input type="select">
                 {/* Go through users array and list out each user as an option */}
-                {props.users.map(user => <option>{user}</option>)}
-
-
+                {props.formusers.map((user, index) => <option key={index}>{user} </option>)}
             </Input>
         </FormGroup>
         <FormGroup>
@@ -19,6 +17,10 @@ const KudosForm = props => (
         <FormGroup>
             <Input type="textarea" placeholder="Kudos text" />
         </FormGroup>
+        <Row><Col md="12">
+            <Button onClick={props.postKudo}> Click me </Button>
+        </Col></Row>
     </Form>
+    //  why can't put button here??
 )
 export default KudosForm;
