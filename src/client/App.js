@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Container, Row, Button, Card, CardBody, Form, FormGroup, Input, Label } from "reactstrap";
+import { Col, Container, Row, Button, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import AwardCard from './components/AwardCard';
 import KudosForm from "./components/KudosForm";
 import axios from "axios";
@@ -12,11 +12,15 @@ class App extends Component {
     kudosTitle: "",
     kudosText: "",
     kudosReceiver: "",
-    kudosSender: ""
+    kudosSender: "",
+    modal: false
   }
+
 
   //pulling data from Users and Awards API and populating users and awards arrays
   componentDidMount = () => {
+
+    this.toggle = this.toggle.bind(this);
 
     axios.get("/api/users").then(
       response => {
@@ -32,6 +36,13 @@ class App extends Component {
       })
     );
 
+  }
+
+  //trying out modal
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
   }
 
   //Method to post specified Kudos
@@ -78,6 +89,7 @@ class App extends Component {
 
   render() {
     return (
+
       <Container>
         <Row>
           <Col md="12">
@@ -89,7 +101,31 @@ class App extends Component {
           <Col md="12" lg="3">
             <Card>
               <CardBody className="mx-auto">
-                <Button color="success">Give Kudos</Button>
+                {/* <Button color="success">Give Kudos</Button> */}
+                <Button color="success" onClick={this.toggle}>Give Kudos</Button>
+                {/* Presenting KudoForm through a Modal */}
+                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.className}>
+                  <ModalHeader toggle={this.toggle}> Give Kudos </ModalHeader>
+                  <ModalBody>
+                    <KudosForm
+                      awards={this.state.awards}
+                      postKudos={this.postKudos}
+                      users={this.state.users}
+                      updateKudosText={this.updateKudosText}
+                      kudosText={this.state.kudosText}
+                      updateKudosTitle={this.updateKudosTitle}
+                      kudosTitle={this.state.kudosTitle}
+                      updateKudosReceiver={this.updateKudosReceiver}
+                      kudosReceiver={this.state.kudosReceiver}
+                      updateKudosSender={this.updateKudosSender}
+                      kudosSender={this.state.kudosSender}
+                    />
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="primary" onClick={this.postKudos}>Post Kudos</Button>
+                    <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+                  </ModalFooter>
+                </Modal>
               </CardBody>
             </Card>
           </Col>
@@ -109,7 +145,7 @@ class App extends Component {
           <Col md="12">
 
             {/* present the KudosForm and passing the relevant props*/}
-            <KudosForm
+            {/* <KudosForm
               awards={this.state.awards}
               postKudos={this.postKudos}
               users={this.state.users}
@@ -121,7 +157,7 @@ class App extends Component {
               kudosReceiver={this.state.kudosReceiver}
               updateKudosSender={this.updateKudosSender}
               kudosSender={this.state.kudosSender}
-            />
+            /> */}
 
           </Col>
         </Row>

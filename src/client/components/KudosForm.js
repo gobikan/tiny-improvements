@@ -49,9 +49,9 @@ const KudosForm = props => (
             </Input>
         </FormGroup>
 
-        <Row><Col md="12">
-            <Button onClick={props.postKudos}> Post kudos </Button>
-        </Col></Row>
+        {/* <Row><Col md="12">
+            <Button color="primary" onClick={props.postKudos}>Post Kudos</Button>
+        </Col></Row> */}
     </Form>
     //  why can't put button here??
 )
