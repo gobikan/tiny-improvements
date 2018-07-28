@@ -7,10 +7,6 @@ const bodyParser = require("body-parser");
 const PORT = process.env.PORT || 8000;
 const app = express();
 
-
-
-
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -31,7 +27,7 @@ const users = [
     {
         userId: 6582,
         name: "Gobi",
-        position: "King of Mid-Day Naps1"
+        position: "King of Mid-Day Naps"
     }
 ];
 

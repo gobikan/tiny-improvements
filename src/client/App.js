@@ -1,73 +1,23 @@
 import React, { Component } from "react";
 import { Col, Container, Row, Button, Card, CardBody, Form, FormGroup, Input, Label } from "reactstrap";
-import VoteForm from './components/VoteForm';
 import AwardCard from './components/AwardCard';
 import KudosForm from "./components/KudosForm";
-import PetCard from "./components/PetCard";
 import axios from "axios";
 
 class App extends Component {
 
-  constructor() {
-    super();
-    this.state = {
-      users: [],
-
-      friends: [],
-
-      restaurants: [
-        {
-          name: 'Maialino',
-          genre: 'Italian',
-          score: 4.4
-        },
-        {
-          name: 'Beyond Sushi',
-          genre: 'Vegan',
-          score: 4.7
-        },
-        {
-          name: 'Abyssinia',
-          genre: 'Ethiopian',
-          score: 4.5
-        },
-        {
-          name: 'La Roja de Todos',
-          genre: 'Chilean',
-          score: 4.5
-        }
-      ],
-
-      awards: [],
-
-      pets: [
-        {
-          name: 'Memphis',
-          age: 12,
-          type: 'Dog'
-        },
-        {
-          name: 'Baby',
-          age: 11,
-          type: 'Panther'
-        },
-        {
-          name: 'Peach',
-          age: 3,
-          type: 'Cat'
-        },
-        {
-          name: 'Opal',
-          age: 1,
-          type: 'Kitten'
-        }
-      ]
-
-    }
+  state = {
+    users: [],
+    awards: [],
+    kudosTitle: "",
+    kudosText: "",
+    kudosReceiver: "",
+    kudosSender: ""
   }
 
-
+  //pulling data from Users and Awards API and populating users and awards arrays
   componentDidMount = () => {
+
     axios.get("/api/users").then(
       response => {
         this.setState(
@@ -82,20 +32,48 @@ class App extends Component {
       })
     );
 
-
   }
 
-  //Function to post
-  postKudoFunction = () => {
+  //Method to post specified Kudos
+  postKudos = () => {
     axios.post("/api/kudos", {
       id: 5,
-      title: "Fastest Typer Award",
-      comment: "Have you seen how fast George types??"
+      title: this.state.kudosTitle,
+      comment: this.state.kudosText,
+      receiver: this.state.kudosReceiver
     }).then(response => {
       this.setState({
         awards: response.data
       })
     })
+  }
+
+  //Method to update kudoText on input
+  updateKudosText = event => {
+    this.setState({
+      kudosText: event.target.value
+    });
+  }
+
+  //Method to update kudosTitle on input
+  updateKudosTitle = event => {
+    this.setState({
+      kudosTitle: event.target.value
+    });
+  }
+
+  //Method to update KudoReceiver on selection
+  updateKudosReceiver = event => {
+    this.setState({
+      kudosReceiver: event.target.value
+    });
+  }
+
+  //Method to update KudoSender on selection
+  updateKudosSender = event => {
+    this.setState({
+      kudosSender: event.target.value
+    });
   }
 
   render() {
@@ -116,36 +94,38 @@ class App extends Component {
             </Card>
           </Col>
           <Col md="12" lg="9">
-            {this.state.awards.map((award, index) => <AwardCard key={index} title={award.title} comment={award.comment} receiver={award.receiver} />)}
+            {/* list out all the awards by calling the AwardCard component */}
+            {this.state.awards.map((award, index) =>
+              <AwardCard
+                key={index}
+                title={award.title}
+                comment={award.comment}
+                receiver={award.receiver}
+              />)}
           </Col>
         </Row>
         <br />
         <Row>
           <Col md="12">
 
-            {/* pass users from state to formusers as a prop */}
-            <KudosForm awards={this.state.awards} postKudo={this.postKudoFunction} formusers={this.state.users} />
+            {/* present the KudosForm and passing the relevant props*/}
+            <KudosForm
+              awards={this.state.awards}
+              postKudos={this.postKudos}
+              users={this.state.users}
+              updateKudosText={this.updateKudosText}
+              kudosText={this.state.kudosText}
+              updateKudosTitle={this.updateKudosTitle}
+              kudosTitle={this.state.kudosTitle}
+              updateKudosReceiver={this.updateKudosReceiver}
+              kudosReceiver={this.state.kudosReceiver}
+              updateKudosSender={this.updateKudosSender}
+              kudosSender={this.state.kudosSender}
+            />
 
           </Col>
         </Row>
-        {/*New Code Goes Below Here */}
 
-
-        {/* {this.state.pets.map((pet, index) => <PetCard key={index} name={pet.name} age={pet.age} />)}
-
-        <hr />
-        <h1> 🙋🏽 Friend Space </h1>
-        <br />
-        <h4> My Friend List: </h4>
-        <br />
-        {this.state.friends.map((e, index) => (
-          <Card>
-            <CardBody >
-              <h2 key={index}> {e.name}</h2>
-              <p> {e.location} </p>
-            </CardBody>
-          </Card>
-        ))} */}
       </Container>
     )
   }
