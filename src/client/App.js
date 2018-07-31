@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Col, Container, Row, Button, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import AwardCard from './components/AwardCard';
 import KudosForm from "./components/KudosForm";
+import ModalComponent from "./components/ModalComponent";
 import axios from "axios";
 
 // git add . //add to watch list
@@ -18,7 +19,8 @@ class App extends Component {
     kudosText: "",
     kudosReceiver: "",
     kudosSender: "",
-    modal: false
+    modal: false,
+    kudosModalName: "Give Kudos",
   }
 
 
@@ -106,11 +108,33 @@ class App extends Component {
           <Col md="12" lg="3">
             <Card>
               <CardBody className="mx-auto">
+
+
+                {/* Building a component for Modal */}
+                <ModalComponent
+                  awards={this.state.awards}
+                  postKudos={this.postKudos}
+                  users={this.state.users}
+                  updateKudosText={this.updateKudosText}
+                  kudosText={this.state.kudosText}
+                  updateKudosTitle={this.updateKudosTitle}
+                  kudosTitle={this.state.kudosTitle}
+                  updateKudosReceiver={this.updateKudosReceiver}
+                  kudosReceiver={this.state.kudosReceiver}
+                  updateKudosSender={this.updateKudosSender}
+                  kudosSender={this.state.kudosSender}
+                  isOpen={this.state.modal}
+                  toggle={this.toggle}
+                  className={this.className}
+                  kudosModalName={this.state.kudosModalName}
+
+
+                />
                 {/* <Button color="success">Give Kudos</Button> */}
-                <Button color="success" onClick={this.toggle}>Give Kudos</Button>
+                {/* <Button color="success" onClick={this.toggle}>{this.state.kudosModalName}</Button> */}
 
                 {/* Presenting KudoForm through a Modal */}
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.className}>
+                {/* <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.className}>
                   <ModalHeader toggle={this.toggle}> Give Kudos </ModalHeader>
                   <ModalBody>
                     <KudosForm
@@ -128,10 +152,10 @@ class App extends Component {
                     />
                   </ModalBody>
                   <ModalFooter>
-                    <Button color="primary" onClick={this.postKudos}>Post Kudos</Button>
+                    <Button color="primary" onClick={this.postKudos}>{this.state.kudosModalName}</Button>
                     <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                   </ModalFooter>
-                </Modal>
+                </Modal> */}
               </CardBody>
             </Card>
           </Col>
