@@ -14,7 +14,7 @@ const KudosForm = props => (
             >
                 {/* Go through formusers array and map out the name of each user*/}
                 <option>Select receiver</option>
-                {props.users.map((user, index) => <option key={index}>{user.name} </option>)}
+                {props.users.map((user) => <option key={user.id}>{user.name} </option>)}
 
             </Input>
         </FormGroup>
@@ -44,7 +44,7 @@ const KudosForm = props => (
             >
                 {/* Go through formusers array and map out the name of each user*/}
                 <option>Select sender</option>
-                {props.users.map((user, index) => <option key={index}>{user.name} </option>)}
+                {props.users.map((user) => <option key={user.id}>{user.name} </option>)}
 
             </Input>
         </FormGroup>

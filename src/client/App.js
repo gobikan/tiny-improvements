@@ -4,6 +4,11 @@ import AwardCard from './components/AwardCard';
 import KudosForm from "./components/KudosForm";
 import axios from "axios";
 
+// git add . //add to watch list
+// git status //confirm that is has been added and review the changes
+// git commit -m "Add new components" //committing the changes with a comment
+// git push origin HEAD //pushing it to the master or HEAD (wouldn't do this in real life
+
 class App extends Component {
 
   state = {
@@ -30,7 +35,7 @@ class App extends Component {
       }
     );
 
-    axios.get("/api/awards").then(response =>
+    axios.get("/api/kudos").then(response =>
       this.setState({
         awards: response.data
       })
@@ -103,6 +108,7 @@ class App extends Component {
               <CardBody className="mx-auto">
                 {/* <Button color="success">Give Kudos</Button> */}
                 <Button color="success" onClick={this.toggle}>Give Kudos</Button>
+
                 {/* Presenting KudoForm through a Modal */}
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.className}>
                   <ModalHeader toggle={this.toggle}> Give Kudos </ModalHeader>
@@ -134,9 +140,9 @@ class App extends Component {
             {this.state.awards.map((award, index) =>
               <AwardCard
                 key={index}
-                title={award.title}
-                comment={award.comment}
-                receiver={award.receiver}
+                title={award.name}
+                comment={award.comment__c}
+              // receiver={award.receiver}
               />)}
           </Col>
         </Row>

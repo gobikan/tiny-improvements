@@ -4,6 +4,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 //import bodyParser from "body-parser"
 
+const salesForce = require("./config/salesforce");
+
 const PORT = process.env.PORT || 8000;
 const app = express();
 
@@ -13,55 +15,31 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 //let express use public folder
 
-const users = [
-    {
-        userId: 45089,
-        name: "Owen",
-        position: "Captian of the Breakroom"
-    },
-    {
-        userId: 223,
-        name: "Brooke",
-        position: "Winner of All Dance-Offs"
-    },
-    {
-        userId: 6582,
-        name: "Gobi",
-        position: "King of Mid-Day Naps"
-    }
-];
+const users = [];
 
-app.get("/api/users", (req, res) => res.json(users));
+//app.get("/api/users", (req, res) => res.json(users));
 //defining the endpoint. get post. geting json from res.json empty array
 
-app.post("api/users", (req, res) => console.log("we want to create"));
+app.get("/api/users", (req, res) => {
+    salesForce.query(`SELECT id, Name FROM Tiny_Improvements_User__c`).then((data) => {
+        // return all of the fields from the object users in SalesForce
+        res.json(data.records.map(record => record._fields))
+        //console.log(data.records.map(record => record))
+    });
+});
+
+//app.post("api/users", (req, res) => console.log("we want to create"));
 //posting
 
-const awards = [
-    {
-        id: 1,
-        title: "Best Boss Award!",
-        comment: "Thanks for always looking out for us.",
-        sender: "Fabian",
-        receiver: "Leon"
-    },
-    {
-        id: 2,
-        title: "Longest Commute Award!",
-        comment: "I can't believe Laura makes it to work as often as she does.",
-        sender: "Archit",
-        receiver: "Laura"
-    },
-    {
-        id: 3,
-        title: "Most likely to nap at work!",
-        comment: "Maybe you need more coffee.",
-        sender: "Gobi",
-        receiver: "Owen"
-    }
+const awards = [];
 
-];
-app.get("/api/awards", (req, res) => res.json(awards));
+app.get("/api/kudos", (req, res) => {
+    salesForce.query(`SELECT id, Name, Comment__c, Receiver__c, Sender__c FROM Kudos__c`).then((data) => {
+        // return all of the fields from the object Kudos in SalesForce
+        res.json(data.records.map(record => record._fields))
+
+    });
+});
 
 const friends = [
     {
@@ -89,8 +67,6 @@ const friends = [
         location: 'Atlanta, GA'
     }
 ];
-
-
 
 app.get("/api/friends", (req, res) => res.json(friends));
 
