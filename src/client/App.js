@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Col, Container, Row, Button, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import AwardCard from './components/AwardCard';
 import KudosForm from "./components/KudosForm";
-import ModalComponent from "./components/ModalComponent";
+//import ModalComponent from "./components/ModalComponent";
 import axios from "axios";
 
 // git add . //add to watch list
@@ -55,43 +55,36 @@ class App extends Component {
   //Method to post specified Kudos
   postKudos = () => {
     axios.post("/api/kudos", {
-      id: 5,
-      title: this.state.kudosTitle,
-      comment: this.state.kudosText,
-      receiver: this.state.kudosReceiver
+      //id: this.state.users.find(user => user.name === this.state.sender).id,
+      Name: this.state.kudosTitle,
+      Comment__c: this.state.kudosText,
+      Receiver__c: this.state.users.find(user => user.name === this.state.kudosReceiver).id,
+      Sender__c: this.state.users.find(user => user.name === this.state.kudosSender).id
     }).then(response => {
-      this.setState({
-        awards: response.data
-      })
+      // this.setState({
+      //   awards: response.data
+      //})
     })
   }
 
   //Method to update kudoText on input
   updateKudosText = event => {
-    this.setState({
-      kudosText: event.target.value
-    });
+    this.setState({ kudosText: event.target.value });
   }
 
   //Method to update kudosTitle on input
   updateKudosTitle = event => {
-    this.setState({
-      kudosTitle: event.target.value
-    });
+    this.setState({ kudosTitle: event.target.value });
   }
 
   //Method to update KudoReceiver on selection
   updateKudosReceiver = event => {
-    this.setState({
-      kudosReceiver: event.target.value
-    });
+    this.setState({ kudosReceiver: event.target.value });
   }
 
   //Method to update KudoSender on selection
   updateKudosSender = event => {
-    this.setState({
-      kudosSender: event.target.value
-    });
+    this.setState({ kudosSender: event.target.value });
   }
 
   render() {
@@ -109,32 +102,11 @@ class App extends Component {
             <Card>
               <CardBody className="mx-auto">
 
-
-                {/* Building a component for Modal */}
-                <ModalComponent
-                  awards={this.state.awards}
-                  postKudos={this.postKudos}
-                  users={this.state.users}
-                  updateKudosText={this.updateKudosText}
-                  kudosText={this.state.kudosText}
-                  updateKudosTitle={this.updateKudosTitle}
-                  kudosTitle={this.state.kudosTitle}
-                  updateKudosReceiver={this.updateKudosReceiver}
-                  kudosReceiver={this.state.kudosReceiver}
-                  updateKudosSender={this.updateKudosSender}
-                  kudosSender={this.state.kudosSender}
-                  isOpen={this.state.modal}
-                  toggle={this.toggle}
-                  className={this.className}
-                  kudosModalName={this.state.kudosModalName}
-
-
-                />
                 {/* <Button color="success">Give Kudos</Button> */}
-                {/* <Button color="success" onClick={this.toggle}>{this.state.kudosModalName}</Button> */}
+                <Button color="success" onClick={this.toggle}>{this.state.kudosModalName}</Button>
 
                 {/* Presenting KudoForm through a Modal */}
-                {/* <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.className}>
+                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.className}>
                   <ModalHeader toggle={this.toggle}> Give Kudos </ModalHeader>
                   <ModalBody>
                     <KudosForm
@@ -142,31 +114,33 @@ class App extends Component {
                       postKudos={this.postKudos}
                       users={this.state.users}
                       updateKudosText={this.updateKudosText}
-                      kudosText={this.state.kudosText}
+                      // kudosText={this.state.kudosText}
                       updateKudosTitle={this.updateKudosTitle}
-                      kudosTitle={this.state.kudosTitle}
+                      // kudosTitle={this.state.kudosTitle}
                       updateKudosReceiver={this.updateKudosReceiver}
-                      kudosReceiver={this.state.kudosReceiver}
+                      // kudosReceiver={this.state.kudosReceiver}
                       updateKudosSender={this.updateKudosSender}
-                      kudosSender={this.state.kudosSender}
+                    // kudosSender={this.state.kudosSender}
                     />
                   </ModalBody>
                   <ModalFooter>
                     <Button color="primary" onClick={this.postKudos}>{this.state.kudosModalName}</Button>
                     <Button color="secondary" onClick={this.toggle}>Cancel</Button>
                   </ModalFooter>
-                </Modal> */}
+                </Modal>
               </CardBody>
             </Card>
           </Col>
           <Col md="12" lg="9">
             {/* list out all the awards by calling the AwardCard component */}
-            {this.state.awards.map((award, index) =>
+            {this.state.awards.map((award) =>
               <AwardCard
-                key={index}
+                key={award.id}
                 title={award.name}
                 comment={award.comment__c}
-              // receiver={award.receiver}
+                receiver={award.receiver__r.Name}
+                sender={award.sender__r.Name}
+
               />)}
           </Col>
         </Row>

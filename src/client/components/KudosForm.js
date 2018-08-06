@@ -10,7 +10,7 @@ const KudosForm = props => (
                 type="select"
                 placeholder="Receiver"
                 onChange={props.updateKudosReceiver}
-                value={props.kudosReceiver}
+            //value={props.kudosReceiver}
             >
                 {/* Go through formusers array and map out the name of each user*/}
                 <option>Select receiver</option>
@@ -23,7 +23,7 @@ const KudosForm = props => (
                 type="text"
                 placeholder="Kudos Title"
                 onChange={props.updateKudosTitle}
-                value={props.kudosTitle}
+            // value={props.kudosTitle}
             />
         </FormGroup>
         <FormGroup>
@@ -31,7 +31,7 @@ const KudosForm = props => (
                 type="textarea"
                 placeholder="Kudos Text"
                 onChange={props.updateKudosText}
-                value={props.kudosText}
+            // value={props.kudosText}
             />
         </FormGroup>
         <FormGroup>
@@ -40,7 +40,7 @@ const KudosForm = props => (
                 type="select"
                 placeholder="Sender"
                 onChange={props.updateKudosSender}
-                value={props.kudosSender}
+            // value={props.kudosSender}
             >
                 {/* Go through formusers array and map out the name of each user*/}
                 <option>Select sender</option>
@@ -48,10 +48,6 @@ const KudosForm = props => (
 
             </Input>
         </FormGroup>
-
-        {/* <Row><Col md="12">
-            <Button color="primary" onClick={props.postKudos}>Post Kudos</Button>
-        </Col></Row> */}
     </Form>
     //  why can't put button here??
 )

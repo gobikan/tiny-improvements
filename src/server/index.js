@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 //import express from "express"
 
@@ -28,55 +30,37 @@ app.get("/api/users", (req, res) => {
     });
 });
 
-//app.post("api/users", (req, res) => console.log("we want to create"));
-//posting
 
 const awards = [];
 
 app.get("/api/kudos", (req, res) => {
-    salesForce.query(`SELECT id, Name, Comment__c, Receiver__c, Sender__c FROM Kudos__c`).then((data) => {
+    salesForce.query(`SELECT Id, Name, Comment__c, Receiver__r.Name, Sender__r.Name FROM Kudos__c`).then((data) => {
         // return all of the fields from the object Kudos in SalesForce
         res.json(data.records.map(record => record._fields))
 
     });
 });
 
-const friends = [
-    {
-        name: 'Annie Katz',
-        location: 'Macon, GA'
-    },
-    {
-        name: 'Alia Bisat',
-        location: 'New York, NY'
-    },
-    {
-        name: 'Dartaniel Bliss',
-        location: 'Chicago, Il'
-    },
-    {
-        name: 'Jacob Neuburger',
-        location: 'Chicago, Il'
-    },
-    {
-        name: 'Stacey Lockerman',
-        location: 'Washington, DC'
-    },
-    {
-        name: 'Weldon Ledbetter',
-        location: 'Atlanta, GA'
-    }
-];
-
-app.get("/api/friends", (req, res) => res.json(friends));
 
 app.post("/api/kudos", (req, res) => {
-    console.log("----THE REQUEST BODY-------------------------------");
-    console.log(req.body);
-    console.log("-----------------------------------");
-    awards.push(req.body);
-    res.json(awards)
-});
+    salesForce.createKudos(req.body).then(() => {
+        res.json({ success: true })
+        console.log("----THE REQUEST BODY-------------------------------");
+        console.log(req.body);
+        console.log("-----------------------------------");
+        //awards.push(req.body);
+        //res.json(awards)
+    });
+})
+
+
+// app.post("/api/kudos", (req, res) => {
+//     console.log("----THE REQUEST BODY-------------------------------");
+//     console.log(req.body);
+//     console.log("-----------------------------------");
+//     //awards.push(req.body);
+//     //res.json(awards)
+// });
 
 
 
