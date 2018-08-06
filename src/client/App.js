@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Col, Container, Row, Button, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import AwardCard from './components/AwardCard';
 import KudosForm from "./components/KudosForm";
+import KudosFilter from "./components/KudosFilter";
 //import ModalComponent from "./components/ModalComponent";
 import axios from "axios";
 
@@ -98,7 +99,7 @@ class App extends Component {
         </Row>
         <br />
         <Row>
-          <Col md="12" lg="3">
+          <Col md="3" lg="3">
             <Card>
               <CardBody className="mx-auto">
 
@@ -131,6 +132,14 @@ class App extends Component {
               </CardBody>
             </Card>
           </Col>
+          <Col md="9">
+            <KudosFilter title="Test" />
+          </Col>
+
+        </Row>
+        <Row>
+          <Col>
+          </Col>
           <Col md="12" lg="9">
             {/* list out all the awards by calling the AwardCard component */}
             {this.state.awards.map((award) =>
@@ -145,11 +154,11 @@ class App extends Component {
           </Col>
         </Row>
         <br />
-        <Row>
+        {/* <Row>
           <Col md="12">
 
-            {/* present the KudosForm and passing the relevant props*/}
-            {/* <KudosForm
+            
+            <KudosForm
               awards={this.state.awards}
               postKudos={this.postKudos}
               users={this.state.users}
@@ -161,10 +170,10 @@ class App extends Component {
               kudosReceiver={this.state.kudosReceiver}
               updateKudosSender={this.updateKudosSender}
               kudosSender={this.state.kudosSender}
-            /> */}
+            />
 
           </Col>
-        </Row>
+        </Row> */}
 
       </Container>
     )

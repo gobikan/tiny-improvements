@@ -34,7 +34,8 @@ app.get("/api/users", (req, res) => {
 const awards = [];
 
 app.get("/api/kudos", (req, res) => {
-    salesForce.query(`SELECT Id, Name, Comment__c, Receiver__r.Name, Sender__r.Name FROM Kudos__c`).then((data) => {
+    salesForce.query(`SELECT Id, Name, Comment__c, Receiver__r.Name, Sender__r.Name, CreatedDate FROM Kudos__c`).then((data) => {
+        // salesForce.query(`SELECT Id, Name, Comment__c, Receiver__r.Name, Sender__r.Name FROM Kudos__c`).then((data) => {
         // return all of the fields from the object Kudos in SalesForce
         res.json(data.records.map(record => record._fields))
 
