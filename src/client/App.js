@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import moment from 'moment';
 import { Col, Container, Row, Button, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import AwardCard from './components/AwardCard';
 import KudosForm from "./components/KudosForm";
@@ -9,12 +10,13 @@ import axios from "axios";
 // git add . //add to watch list
 // git status //confirm that is has been added and review the changes
 // git commit -m "Add new components" //committing the changes with a comment
-// git push origin HEAD //pushing it to the master or HEAD (wouldn't do this in real life
+// git push origin master //pushing it to the master or HEAD (wouldn't do this in real life
 
 class App extends Component {
 
   state = {
     users: [],
+    fullAwards: [],
     awards: [],
     kudosTitle: "",
     kudosText: "",
@@ -40,7 +42,8 @@ class App extends Component {
 
     axios.get("/api/kudos").then(response =>
       this.setState({
-        awards: response.data
+        awards: response.data,
+        fullAwards: response.data,
       })
     );
 
@@ -66,6 +69,27 @@ class App extends Component {
       //   awards: response.data
       //})
     })
+  }
+
+  //Method to get unique senders
+  //const uniqueSenders = [...new ]
+
+  //Method to get sender in ordre to filter awards list
+  filterSender = event => {
+    const filterAwards = this.state.fullAwards.filter(award => award.sender__r.Name === event.target.value);
+    this.setState({ awards: filterAwards });
+  }
+
+  //Method to get receiver in order to filter Awards list
+  filterReceiver = event => {
+    const filterAwards = this.state.fullAwards.filter(award => award.receiver__r.Name === event.target.value);
+    this.setState({ awards: filterAwards });
+  }
+
+  //Method to get date in order to filter Awards list
+  filterDate = event => {
+    const filterAwards = this.state.fullAwards.filter(award => moment(award.createddate).format('YYYY-MM-DD') === event.target.value);
+    this.setState({ awards: filterAwards });
   }
 
   //Method to update kudoText on input
@@ -94,12 +118,12 @@ class App extends Component {
       <Container>
         <Row>
           <Col md="12">
-            <h1>Tiny Progress</h1>
+            <h1>Moderate Improvement</h1>
           </Col>
         </Row>
         <br />
         <Row>
-          <Col md="3" lg="3">
+          <Col md="3">
             <Card>
               <CardBody className="mx-auto">
 
@@ -111,17 +135,12 @@ class App extends Component {
                   <ModalHeader toggle={this.toggle}> Give Kudos </ModalHeader>
                   <ModalBody>
                     <KudosForm
-                      awards={this.state.awards}
                       postKudos={this.postKudos}
                       users={this.state.users}
                       updateKudosText={this.updateKudosText}
-                      // kudosText={this.state.kudosText}
                       updateKudosTitle={this.updateKudosTitle}
-                      // kudosTitle={this.state.kudosTitle}
                       updateKudosReceiver={this.updateKudosReceiver}
-                      // kudosReceiver={this.state.kudosReceiver}
                       updateKudosSender={this.updateKudosSender}
-                    // kudosSender={this.state.kudosSender}
                     />
                   </ModalBody>
                   <ModalFooter>
@@ -132,15 +151,27 @@ class App extends Component {
               </CardBody>
             </Card>
           </Col>
-          <Col md="9">
-            <KudosFilter title="Test" />
+          <Col md="9" >
+
+            <KudosFilter
+              filterReceiver={this.filterReceiver}
+              receivers={this.state.fullAwards.map(award => award.receiver__r.Name)}
+              filterSender={this.filterSender}
+              senders={this.state.fullAwards.map(award => award.sender__r.Name)}
+              filterDate={this.filterDate}
+              dates={this.state.fullAwards.map(award => moment(award.createddate).format('YYYY-MM-DD'))}
+
+            // awards=[...new Set({this.state.fullAwards.map(award => award.sender__r.Name)})]
+            // awards={[...new Set(this.state.fullAwards)]}
+            />
           </Col>
 
         </Row>
+        <hr></hr>
         <Row>
           <Col>
           </Col>
-          <Col md="12" lg="9">
+          <Col md="12" >
             {/* list out all the awards by calling the AwardCard component */}
             {this.state.awards.map((award) =>
               <AwardCard
@@ -149,6 +180,8 @@ class App extends Component {
                 comment={award.comment__c}
                 receiver={award.receiver__r.Name}
                 sender={award.sender__r.Name}
+                //sent={award.createddate}
+                sent={moment(award.createddate).format('YYYY-MM-DD')}
 
               />)}
           </Col>
