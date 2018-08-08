@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import moment from 'moment';
 import { Col, Container, Row, Button, Card, CardBody, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
@@ -155,14 +156,12 @@ class App extends Component {
 
             <KudosFilter
               filterReceiver={this.filterReceiver}
-              receivers={this.state.fullAwards.map(award => award.receiver__r.Name)}
+              receivers={this.state.users}
               filterSender={this.filterSender}
-              senders={this.state.fullAwards.map(award => award.sender__r.Name)}
+              senders={this.state.users}
               filterDate={this.filterDate}
               dates={this.state.fullAwards.map(award => moment(award.createddate).format('YYYY-MM-DD'))}
-
-            // awards=[...new Set({this.state.fullAwards.map(award => award.sender__r.Name)})]
-            // awards={[...new Set(this.state.fullAwards)]}
+              numAwards={this.state.awards.length}
             />
           </Col>
 
@@ -180,33 +179,12 @@ class App extends Component {
                 comment={award.comment__c}
                 receiver={award.receiver__r.Name}
                 sender={award.sender__r.Name}
-                //sent={award.createddate}
                 sent={moment(award.createddate).format('YYYY-MM-DD')}
 
               />)}
           </Col>
         </Row>
         <br />
-        {/* <Row>
-          <Col md="12">
-
-            
-            <KudosForm
-              awards={this.state.awards}
-              postKudos={this.postKudos}
-              users={this.state.users}
-              updateKudosText={this.updateKudosText}
-              kudosText={this.state.kudosText}
-              updateKudosTitle={this.updateKudosTitle}
-              kudosTitle={this.state.kudosTitle}
-              updateKudosReceiver={this.updateKudosReceiver}
-              kudosReceiver={this.state.kudosReceiver}
-              updateKudosSender={this.updateKudosSender}
-              kudosSender={this.state.kudosSender}
-            />
-
-          </Col>
-        </Row> */}
 
       </Container>
     )
